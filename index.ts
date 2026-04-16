@@ -55,15 +55,31 @@ const STATIC_MODELS: CursorModelDef[] = [
   { id: "composer-1.5", name: "Composer 1.5", reasoning: false, contextWindow: 200000, maxTokens: 32768 },
   { id: "composer-1", name: "Composer 1", reasoning: false, contextWindow: 200000, maxTokens: 32768 },
   // Claude Opus
-  { id: "opus-4.6-thinking", name: "Claude 4.6 Opus (Thinking)", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
-  { id: "opus-4.6", name: "Claude 4.6 Opus", reasoning: false, contextWindow: 200000, maxTokens: 32000 },
-  { id: "opus-4.5-thinking", name: "Claude 4.5 Opus (Thinking)", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
-  { id: "opus-4.5", name: "Claude 4.5 Opus", reasoning: false, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-low", name: "Opus 4.7 Low", reasoning: false, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-medium", name: "Opus 4.7 Medium", reasoning: false, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-high", name: "Opus 4.7", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-xhigh", name: "Opus 4.7 Extra High", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-max", name: "Opus 4.7 Max", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-thinking-low", name: "Opus 4.7 Low Thinking", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-thinking-medium", name: "Opus 4.7 Medium Thinking", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-thinking-high", name: "Opus 4.7 Thinking", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-thinking-xhigh", name: "Opus 4.7 Extra High Thinking", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-opus-4-7-thinking-max", name: "Opus 4.7 Max Thinking", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-4.6-opus-high", name: "Opus 4.6 1M", reasoning: true, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4.6-opus-max", name: "Opus 4.6 1M Max", reasoning: true, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4.6-opus-high-thinking", name: "Opus 4.6 1M Thinking", reasoning: true, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4.6-opus-max-thinking", name: "Opus 4.6 1M Max Thinking", reasoning: true, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4.5-opus-high", name: "Opus 4.5", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-4.5-opus-high-thinking", name: "Opus 4.5 Thinking", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
   // Claude Sonnet
-  { id: "sonnet-4.6-thinking", name: "Claude 4.6 Sonnet (Thinking)", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
-  { id: "sonnet-4.6", name: "Claude 4.6 Sonnet", reasoning: false, contextWindow: 200000, maxTokens: 32000 },
-  { id: "sonnet-4.5-thinking", name: "Claude 4.5 Sonnet (Thinking)", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
-  { id: "sonnet-4.5", name: "Claude 4.5 Sonnet", reasoning: false, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-4.6-sonnet-medium", name: "Sonnet 4.6 1M", reasoning: false, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4.6-sonnet-medium-thinking", name: "Sonnet 4.6 1M Thinking", reasoning: true, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4.5-sonnet", name: "Sonnet 4.5 1M", reasoning: false, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4.5-sonnet-thinking", name: "Sonnet 4.5 1M Thinking", reasoning: true, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4-sonnet", name: "Sonnet 4", reasoning: false, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-4-sonnet-1m", name: "Sonnet 4 1M", reasoning: false, contextWindow: 1000000, maxTokens: 32000 },
+  { id: "claude-4-sonnet-thinking", name: "Sonnet 4 Thinking", reasoning: true, contextWindow: 200000, maxTokens: 32000 },
+  { id: "claude-4-sonnet-1m-thinking", name: "Sonnet 4 1M Thinking", reasoning: true, contextWindow: 1000000, maxTokens: 32000 },
   // GPT-5 series
   { id: "gpt-5.3-codex", name: "GPT-5.3 Codex", reasoning: false, contextWindow: 200000, maxTokens: 32768 },
   { id: "gpt-5.3-codex-low", name: "GPT-5.3 Codex Low", reasoning: false, contextWindow: 200000, maxTokens: 32768 },
@@ -117,37 +133,45 @@ interface ModelVariants {
 }
 
 const MODEL_MAP: Record<string, ModelVariants> = {
-  "claude-sonnet-4-5": {
-    default: "sonnet-4.5",
-    minimal: "sonnet-4.5-thinking",
-    low: "sonnet-4.5-thinking",
-    medium: "sonnet-4.5-thinking",
-    high: "sonnet-4.5-thinking",
-    xhigh: "sonnet-4.5-thinking",
-  },
-  "claude-sonnet-4-6": {
-    default: "sonnet-4.6",
-    minimal: "sonnet-4.6-thinking",
-    low: "sonnet-4.6-thinking",
-    medium: "sonnet-4.6-thinking",
-    high: "sonnet-4.6-thinking",
-    xhigh: "sonnet-4.6-thinking",
-  },
-  "claude-opus-4-5": {
-    default: "opus-4.5",
-    minimal: "opus-4.5-thinking",
-    low: "opus-4.5-thinking",
-    medium: "opus-4.5-thinking",
-    high: "opus-4.5-thinking",
-    xhigh: "opus-4.5-thinking",
+  "claude-opus-4-7": {
+    default: "claude-opus-4-7-high",
+    minimal: "claude-opus-4-7-thinking-low",
+    low: "claude-opus-4-7-thinking-low",
+    medium: "claude-opus-4-7-thinking-medium",
+    high: "claude-opus-4-7-thinking-high",
+    xhigh: "claude-opus-4-7-thinking-xhigh",
   },
   "claude-opus-4-6": {
-    default: "opus-4.6",
-    minimal: "opus-4.6-thinking",
-    low: "opus-4.6-thinking",
-    medium: "opus-4.6-thinking",
-    high: "opus-4.6-thinking",
-    xhigh: "opus-4.6-thinking",
+    default: "claude-4.6-opus-high",
+    minimal: "claude-4.6-opus-high-thinking",
+    low: "claude-4.6-opus-high-thinking",
+    medium: "claude-4.6-opus-high-thinking",
+    high: "claude-4.6-opus-high-thinking",
+    xhigh: "claude-4.6-opus-max-thinking",
+  },
+  "claude-opus-4-5": {
+    default: "claude-4.5-opus-high",
+    minimal: "claude-4.5-opus-high-thinking",
+    low: "claude-4.5-opus-high-thinking",
+    medium: "claude-4.5-opus-high-thinking",
+    high: "claude-4.5-opus-high-thinking",
+    xhigh: "claude-4.5-opus-high-thinking",
+  },
+  "claude-sonnet-4-6": {
+    default: "claude-4.6-sonnet-medium",
+    minimal: "claude-4.6-sonnet-medium-thinking",
+    low: "claude-4.6-sonnet-medium-thinking",
+    medium: "claude-4.6-sonnet-medium-thinking",
+    high: "claude-4.6-sonnet-medium-thinking",
+    xhigh: "claude-4.6-sonnet-medium-thinking",
+  },
+  "claude-sonnet-4-5": {
+    default: "claude-4.5-sonnet",
+    minimal: "claude-4.5-sonnet-thinking",
+    low: "claude-4.5-sonnet-thinking",
+    medium: "claude-4.5-sonnet-thinking",
+    high: "claude-4.5-sonnet-thinking",
+    xhigh: "claude-4.5-sonnet-thinking",
   },
   "gpt-5.2": {
     default: "gpt-5.2",
@@ -203,6 +227,23 @@ for (const [canonicalId, variants] of Object.entries(MODEL_MAP)) {
     if (cursorId) allMappedCursorIds.add(cursorId);
   }
 }
+
+/**
+ * Extra Cursor CLI IDs that are variants of a canonical model but not directly
+ * reachable via any thinking-level mapping. We hide these from the picker so
+ * only the canonical entry is shown. (They can still be used via raw CLI id.)
+ */
+const EXTRA_HIDDEN_VARIANTS: string[] = [
+  // Opus 4.7 non-thinking tiers (picker shows claude-opus-4-7; thinking slider routes to thinking-* variants)
+  "claude-opus-4-7-low",
+  "claude-opus-4-7-medium",
+  "claude-opus-4-7-xhigh",
+  "claude-opus-4-7-max",
+  "claude-opus-4-7-thinking-max",
+  // Opus 4.6 max (picker shows claude-opus-4-6; xhigh routes to max-thinking)
+  "claude-4.6-opus-max",
+];
+for (const id of EXTRA_HIDDEN_VARIANTS) allMappedCursorIds.add(id);
 
 /**
  * Convert a Cursor CLI model ID to its canonical ID.
